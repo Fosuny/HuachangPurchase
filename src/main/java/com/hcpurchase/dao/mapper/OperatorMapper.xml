@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hcpurchase.dao.OperatorMapper">
+
+    <!--供应商数据添加-->
+    <insert id="operator" parameterType="com.hcpurchase.entity.HcOperator">
+        insert into hc_operator(operator_name,operator_principal,operator_phone,operator_adress,operator_status,operator_products)
+        values(#{operatorName},#{operatorPrincipal},#{operatorPhone},#{operatorAdress},#{operatorStatus},#{operatorProducts})
+    </insert>
+
+    <!--供应商产品添加-->
+    <insert id="products" parameterType="com.hcpurchase.util.ProductUtil">
+        insert into hc_product(product_name,product_type,product_price,product_date,product_shelf_date,product_time_unit,product_operator_id,product_status)
+        values
+        <foreach collection="productsList" item="productsList" separator =",">
+               (
+                #{productsList.productName},
+                #{productsList.productType},
+                #{productsList.productPrice},
+                #{productsList.productDate},
+                #{productsList.productShelfDate},
+                #{productsList.productTimeUnit},
+                #{productsList.productOperatorId},
+                #{productsList.productStatus}
+                )
+        </foreach>
+    </insert>
+
+</mapper>

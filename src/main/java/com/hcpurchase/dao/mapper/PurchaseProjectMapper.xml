@@ -1,0 +1,248 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hcpurchase.dao.PurchaseProjectMapper">
+
+    <!-- 新建项目 -->
+    <insert id="addProject" parameterType="com.hcpurchase.entity.HcPj">
+		insert into hc_pj(pj_name,pj_type,pj_purchase_name,pj_price,pj_count,pj_total_price,pj_create_date,pj_level,pj_status,pj_end_date,pj_number,pj_remarks)
+		values(#{pjName},#{pjType},#{pjPurchaseName},#{pjPrice},#{pjCount},#{pjTotalPrice},#{pjCreateDate},#{pjLevel},#{pjStatus},#{pjEndDate},#{pjNumber},#{pjRemarks})
+	</insert>
+
+	<!-- 项目数据查询 -->
+	<select id="queryProject" resultType="com.hcpurchase.entity.HcPj" parameterType="map">
+		select
+			pj_id,pj_name,pj_type,pj_purchase_name,pj_price,pj_count,pj_total_price,pj_level,pj_status,pj_create_date,pj_update_date,pj_number
+		from
+			hc_pj
+			<where>
+				status = 1
+				<if test="pjLevel != null and pjLevel != ''">
+					and pj_level = #{pjLevel}
+				</if>
+				<if test="pjNumber != null and pjNumber != ''">
+					and pj_number like '%'#{pjNumber}'%'
+				</if>
+				<if test="pjName != null and pjName != ''">
+					and	pj_name like '%'#{pjName}'%'
+				</if>
+				<if test="pjCreateDate != null and pjCreateDate != ''">
+					and	pj_create_date = #{pjCreateDate}
+				</if>
+				<if test="pjPurchaseName != null and pjPurchaseName != ''">
+					and	pj_purchase_name like '%'#{pjPurchaseName}'%'
+				</if>
+				<if test="pjStatus != null and pjStatus != ''">
+					and	pj_status = #{pjStatus}
+				</if>
+				<if test="pjNumber != null and pjNumber != ''">
+					and pj_number like '%'#{pjNumber}'%'
+				</if>
+			</where>
+			limit
+				#{curr},#{limit}
+	</select>
+
+	<!--项目总条数查询-->
+	<select id="queryCount" resultType="int">
+		select count(pj_id) from hc_pj
+		<where>
+			status = 1
+			<if test="pjLevel != null and pjLevel != ''">
+				and pj_level = #{pjLevel}
+			</if>
+			<if test="pjNumber != null and pjNumber != ''">
+				and pj_number = like '%'#{pjNumber}'%'
+			</if>
+			<if test="pjName != null and pjName != ''">
+				and	pj_name = like '%'#{pjName}'%'
+			</if>
+			<if test="pjCreateDate != null and pjCreateDate != ''">
+				and	pj_create_date = #{pjCreateDate}
+			</if>
+			<if test="pjPurchaseName != null and pjPurchaseName != ''">
+				and	pj_purchase_name like '%'#{pjPurchaseName}'%'
+			</if>
+			<if test="pjStatus != null and pjStatus != ''">
+				and	pj_status = #{pjStatus}
+			</if>
+			<if test="pjNumber != null and pjNumber != ''">
+				and pj_number = like '%'#{pjNumber}'%'
+			</if>
+		</where>
+	</select>
+
+	<!--项目删除-->
+	<update id="dropById">
+		update hc_pj
+		<set>
+			status = 0 where pj_id = #{pjId}
+		</set>
+	</update>
+
+	<!--修改前的数据调出-->
+	<select id="updateQuery" resultType="com.hcpurchase.entity.HcPj">
+		select
+			pj_id,pj_name,pj_type,pj_purchase_name,pj_price,pj_count,pj_total_price,pj_level,pj_status,pj_create_date,pj_update_date,pj_number
+
+		from hc_pj
+		<where>
+			pj_id = #{pjId}
+		</where>
+	</select>
+
+	<!--项目修改-->
+	<update id="updateData" parameterType="com.hcpurchase.entity.HcPj">
+		update hc_pj
+		<set>
+			<if test="pjName != null and pjName != ''">
+				pj_name = #{pjName},
+			</if>
+			<if test="pjType != null and pjType != ''">
+				pj_type = #{pjType},
+			</if>
+			<if test="pjPurchaseName != null and pjPurchaseName != ''">
+				pj_purchase_name = #{pjPurchaseName},
+			</if>
+			<if test="pjPrice != null and pjPrice != ''">
+				pj_price = #{pjPrice},
+			</if>
+			<if test="pjCount != null and pjCount != ''">
+				pj_count = #{pjCount},
+			</if>
+			<if test="pjTotalPrice != null and pjTotalPrice != ''">
+				pj_total_price = #{pjTotalPrice},
+			</if>
+			<if test="pjLevel != null and pjLevel != ''">
+				pj_level = #{pjLevel}
+			</if>
+		</set>
+			where pj_id = #{pjId}
+	</update>
+
+	<!--项目审核数据调出-->
+	<select id="reviewData" resultType="com.hcpurchase.entity.HcPj" parameterType="map">
+		select
+		pj_id,pj_name,pj_type,pj_purchase_name,pj_price,pj_count,pj_total_price,pj_level,pj_status,pj_create_date,pj_update_date,pj_number
+		from
+		hc_pj
+		<where>
+			status = 1
+			<if test="status = 1">
+				and pj_status &gt; 0
+			</if>
+			<if test="status = 1">
+				and pj_status &lt; 5
+			</if>
+		</where>
+			limit #{curr},#{limit}
+	</select>
+
+	<!--项目审核总条数查询-->
+	<select id="reviewDataCount" resultType="int" >
+		select count(*) from
+		hc_pj
+		<where>
+			status = 1
+			<if test="status = 1">
+				and pj_status &gt; 0
+			</if>
+			<if test="status = 1">
+				and pj_status &lt; 5
+			</if>
+			<if test="pjNumber != null and pjNumber != ''">
+				and pj_number  like '%' #{pjNumber} '%'
+			</if>
+			<if test="pjName != null and pjName != ''">
+				and	pj_name  like '%' #{pjName} '%'
+			</if>
+			<if test="pjUpdateDate != null and pjUpdateDate != ''">
+				and	pj_update_date = #{pjUpdateDate}
+			</if>
+			<if test="pjPurchaseName != null and pjPurchaseName != ''">
+				and	pj_purchase_name like '%' #{pjPurchaseName} '%'
+			</if>
+			<if test="pjStatus != null and pjStatus != ''">
+				and	pj_status = #{pjStatus}
+			</if>
+			<if test="pjNumber != null and pjNumber != ''">
+				and pj_number like '%' #{pjNumber} '%'
+			</if>
+		</where>
+	</select>
+
+	<!--项目审核条件查询数据调出-->
+	<select id="reviewDataLike" resultType="com.hcpurchase.entity.HcPj" parameterType="map">
+		select
+		pj_id,pj_name,pj_type,pj_purchase_name,pj_price,pj_count,pj_total_price,pj_level,pj_status,pj_create_date,pj_update_date,pj_number
+		from
+		hc_pj
+		<where>
+			status = 1
+			<if test="status = 1">
+				and pj_status &gt; 0
+			</if>
+			<if test="status = 1">
+				and pj_status &lt; 5
+			</if>
+			<if test="pjNumber != null and pjNumber != ''">
+				and pj_number  like '%' #{pjNumber} '%'
+			</if>
+			<if test="pjName != null and pjName != ''">
+				and	pj_name  like '%' #{pjName} '%'
+			</if>
+			<if test="pjUpdateDate != null">
+				and	pj_update_date = #{pjUpdateDate}
+			</if>
+			<if test="pjPurchaseName != null and pjPurchaseName != ''">
+				and	pj_purchase_name like '%' #{pjPurchaseName} '%'
+			</if>
+			<if test="pjStatus != null and pjStatus != ''">
+				and	pj_status = #{pjStatus}
+			</if>
+			<if test="pjNumber != null and pjNumber != ''">
+				and pj_number like '%' #{pjNumber} '%'
+			</if>
+		</where>
+		limit #{curr},#{limit}
+	</select>
+
+	<!--项目详情页面数据调出-->
+	<select id="datareview" resultType="com.hcpurchase.entity.HcPj">
+		select
+		pj_id,pj_name,pj_type,pj_purchase_name,pj_price,pj_count,pj_total_price,pj_level,pj_status,pj_create_date,pj_update_date,pj_number
+		from
+		hc_pj
+		<where>
+			pj_id = #{pjId}
+		</where>
+	</select>
+
+	<!--项目通过-->
+	<update id="datatrue">
+		update hc_pj
+		<set>
+			<if test="pjStatus == 1 or pjStatus == 2 and pjOnceReason == null" >
+				pj_status = 3
+			</if>
+			<if test="pjStatus == 3 or pjStatus == 4 and pjLastReason == null">
+				pj_status = 5
+			</if>
+		</set>
+		where pj_id = #{pjId}
+	</update>
+
+	<!--项目不通过-->
+	<update id="datafalse">
+		update hc_pj
+		<set>
+			<if test="pjStatus == 1 or pjStatus == 2 and pjOnceReason != null">
+				pj_status = 2,pj_once_reason = #{pjOnceReason}
+			</if>
+			<if test="pjStatus == 3 or pjStatus == 4 and pjLastReason != null">
+				pj_status = 4,pj_last_reason = #{pjLastReason}
+			</if>
+		</set>
+		where pj_id = #{pjId}
+	</update>
+
+</mapper>

@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dataSource name="hcpurchase@localhost">
+  <database-model serializer="dbm" dbms="MYSQL" family-id="MYSQL" format-version="4.23">
+    <root id="1">
+      <ServerVersion>8.0.18</ServerVersion>
+      <DefaultEngine>InnoDB</DefaultEngine>
+      <DefaultTmpEngine>InnoDB</DefaultTmpEngine>
+      <DefaultCasing>lower/lower</DefaultCasing>
+    </root>
+    <schema id="2" parent="1" name="excpring">
+      <Collation>utf8mb4_0900_ai_ci</Collation>
+    </schema>
+    <schema id="3" parent="1" name="fosunxy">
+      <Collation>utf8mb4_0900_ai_ci</Collation>
+    </schema>
+    <schema id="4" parent="1" name="fosunyservlet">
+      <Collation>utf8mb4_0900_ai_ci</Collation>
+    </schema>
+    <schema id="5" parent="1" name="hcpurchase">
+      <Current>1</Current>
+      <Collation>utf8mb4_0900_ai_ci</Collation>
+    </schema>
+    <schema id="6" parent="1" name="information_schema">
+      <Collation>utf8_general_ci</Collation>
+    </schema>
+    <schema id="7" parent="1" name="mybatis">
+      <Collation>utf8mb4_0900_ai_ci</Collation>
+    </schema>
+    <schema id="8" parent="1" name="mysql">
+      <Collation>utf8mb4_0900_ai_ci</Collation>
+    </schema>
+    <schema id="9" parent="1" name="performance_schema">
+      <Collation>utf8mb4_0900_ai_ci</Collation>
+    </schema>
+    <schema id="10" parent="1" name="servletproject">
+      <Collation>utf8mb4_0900_ai_ci</Collation>
+    </schema>
+    <schema id="11" parent="1" name="sprssm">
+      <Collation>utf8mb4_0900_ai_ci</Collation>
+    </schema>
+    <schema id="12" parent="1" name="sys">
+      <Collation>utf8mb4_0900_ai_ci</Collation>
+    </schema>
+  </database-model>
+</dataSource>
